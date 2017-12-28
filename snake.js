@@ -1,3 +1,5 @@
+// TODO: graphics and score
+
 var direction = 2;  // up, left, down, right
 var reqDir = 2; // initially going down
 
@@ -33,16 +35,23 @@ function startGame(){
     myGameArea.start();
 }
 
+function restartGame(){
+    myGameArea.context.clearRect(0,0,myGameArea.canvas.width,myGameArea.canvas.height);
+    reqDir = 2;
+    direction = 2;
+    snakeLength = 3;
+    myGameArea.reset();
+}
+
 function gameOver(){
     myGameArea.clear();
-    myGameArea.context.clearRect(0,0,myGameArea.canvas.width, myGameArea.canvas.height);
+    //myGameArea.context.clearRect(0,0,myGameArea.canvas.width, myGameArea.canvas.height);
 }
 
 /*
  Simulates a 'turn' where the snake moves one spot in some amount of time specified as interval
 */
 function turn(){
-    console.log("asda");
     // Move in the current direction or change direction if possible
     if(reqDir != direction && Math.abs(reqDir-direction) != 2){ // eg can't go up if moving down
         direction = reqDir;
@@ -101,7 +110,7 @@ function turn(){
         }
     }
 
-    //rem = -1;
+    rem = -1;
     // if the snake is over max length
     if(snake.length > snakeLength){
         rem = snake.pop();
@@ -139,16 +148,21 @@ var myGameArea = {
             }
             e.preventDefault(); // prevent the default action (scroll / move caret)
         });
-        // Create the original grid
-        makeGrid();
-        this.interval = setInterval(turn, 200); // Can change turn rate (speed) here
+        this.reset();
     },
     clear : function() {
         clearInterval(this.interval);
-        this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
+        $("#message").text("GAME OVER").show();
+        $("#restartButton").show();
     },
     reset: function() {
-       // Do dis later
+        $("#message").hide();
+        $("#restartButton").hide();
+        snake = [32];
+        food = GenerateFood();
+        // Create the original grid
+        //makeGrid();
+        this.interval = setInterval(turn, 200); // Can change turn rate (speed) here
     }
 }
 
@@ -160,7 +174,7 @@ function updateGraphics(){
     if(rem >= 0){
         var y = Math.floor(rem/boardSize); //round down to nearest int
         var x = rem%boardSize;
-        ctx.clearRect(Math.floor(x*boxWidth)+1, Math.floor(y*boxHeight)+1, boxWidth-2, boxHeight-2);
+        ctx.clearRect(Math.floor(x*boxWidth), Math.floor(y*boxHeight), boxWidth, boxHeight);
     }
 
     var y = Math.floor(food/boardSize); //round down to nearest int
@@ -171,30 +185,20 @@ function updateGraphics(){
     ctx.fillRect(Math.floor(x*boxWidth)+1, Math.floor(y*boxHeight)+1, boxWidth-2, boxHeight-2);
     ctx.closePath();
 
-    /*for(pos in snake){
-        y = Math.floor(pos/boardSize); //round down to nearest int
-        x = pos%boardSize;
+    snake.forEach(function(el){
+        y = Math.floor(el/boardSize); //round down to nearest int
+        x = el%boardSize;
         ctx.beginPath();
         ctx.fillStyle = "green";
         ctx.fillRect(Math.floor(x*boxWidth)+1, Math.floor(y*boxHeight)+1, boxWidth-2, boxHeight-2);
         ctx.closePath();
-    }*/
-
-    for(var i=0;i<snake.length; ++i){
-        y = Math.floor(snake[i]/boardSize); //round down to nearest int
-        x = snake[i]%boardSize;
-        ctx.beginPath();
-        ctx.fillStyle = "green";
-        ctx.fillRect(Math.floor(x*boxWidth)+1, Math.floor(y*boxHeight)+1, boxWidth-2, boxHeight-2);
-        ctx.closePath();
-    }
-
+    });
 }
 
 // Generates 'food' at a random, empty board spot
 function GenerateFood()
 {
-    var potFoodLoc = Math.floor(Math.random()*400);
+    var potFoodLoc = Math.floor(Math.random()*(boardSize*boardSize));
 
     for (var i = 0; i < snake; ++i)
     {
