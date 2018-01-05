@@ -27,11 +27,22 @@ var rem = -1;
 // Start point of snake
 snake.push(32);
 
+//Player score
+var score = 0;
+
+//High score
+var highScore = 0;
+
+//Used to decrease score 
+var counter = 0;
+
 // FUNCTIONS
 
 function startGame(){
     $("#title").hide();
     $("#startButton").hide();
+    $("#score").show();
+    $("#highScore").show();
     myGameArea.start();
 }
 
@@ -40,6 +51,10 @@ function restartGame(){
     reqDir = 2;
     direction = 2;
     snakeLength = 3;
+    $("#highScore").text("High Score: "+ score)
+    
+    score = 0;
+    $("#score").text("Score: " + score);
     myGameArea.reset();
 }
 
@@ -118,6 +133,9 @@ function turn(){
 
     // Update graphics
     updateGraphics();
+
+    //Update score
+    Score();
 }
 
 // The object that handles game interactions
@@ -125,7 +143,7 @@ var myGameArea = {
     canvas : document.createElement("canvas"),
     start : function() {
         this.canvas.width = $(document).width()-20;
-        this.canvas.height = $(document).height()-30;
+        this.canvas.height = $(document).height()-$(document).height()/5.8;
         this.context = this.canvas.getContext("2d");
 
         $("body").append(this.canvas);
@@ -152,11 +170,11 @@ var myGameArea = {
     },
     clear : function() {
         clearInterval(this.interval);
-        $("#message").text("GAME OVER").show();
+        $("#gameOverMessage").text("GAME OVER").show();
         $("#restartButton").show();
     },
     reset: function() {
-        $("#message").hide();
+        $("#gameOverMessage").hide();
         $("#restartButton").hide();
         snake = [32];
         food = GenerateFood();
@@ -232,5 +250,33 @@ function makeGrid(){
         ctx.lineTo(myGameArea.canvas.width, h);
         ctx.stroke();
         ctx.closePath();
+    }
+}
+
+//Handles everything to do with score
+function Score(){
+   if (snake[0] == food)
+   {
+    score += 100;
+    $("#score").text("Score: " + score);
+    counter = 0;
+   }
+   //Decreases score at a constant rate
+   else{
+    counter++;
+    if (isInt(counter/5) == true && score != 0){ //Can change score decay speed here
+        score--;
+        $("#score").text("Score: " + score);
+    }
+   }
+}
+
+//Checks if number is an integer 
+function isInt(x) {
+    if (x % 1 == 0){
+        return true;
+    }
+    else{
+        return false;
     }
 }

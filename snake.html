@@ -12,10 +12,12 @@ canvas {
 </head>
 <body>
 <div id="title" style="position:absolute;width:99%;height:60px;z-index:101;top:20px;text-align:center;font-size:60px;"> Snake </div>
-<div id="message" style="display:none;background-color:white;position:absolute;width:50%;text-align:center;height:50px;vertical-align:middle;top:25%;left:25%;font-size:30px;">hello</div>
+<div id="gameOverMessage" style="display:none;background-color:white;position:absolute;width:50%;text-align:center;height:50px;vertical-align:middle;top:45%;left:25%;font-size:55px;border:2px solid green;border-radius:8px;"></div>
+<div id="score" style="display:none;position:relative;text-align:center;font-size:70px;color:black;">Score: 0</div>
+<div id="highScore" style="display:none;position:relative;text-align:center;font-size:40px;colour:black;">High Score: 0</div>
 <div id="points" style="display:none;position:absolute;top:0px;float:right;right:0px;background-color:black;text-align:right;font-size:30px;color:yellow;"></div>
-<button id="startButton" style="position:absolute;width:100px;z-index:102;top:100px;left:47%;" onclick="startGame()">START</button>
-<button id="restartButton" style="display:none;position:absolute;width:100px;z-index:102;top:100px;left:47%;" onclick="restartGame()">RESTART</button>
+<button id="startButton" style="position:absolute;width:100px;z-index:102;top:100px;left:47%;cursor:pointer;" onclick="startGame()">START</button>
+<button id="restartButton" style="display:none;position:absolute;z-index:102;top:55%;left:46%;font-size:25px;cursor:pointer;background-color:white;margin:2px;border: 2px solid red;color:black;border-radius:8px;" onclick="restartGame()">RESTART</button>
 
 <script src="jquery.min.js"></script>
 <script src="snake.js"></script>
