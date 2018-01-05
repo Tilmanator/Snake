@@ -51,7 +51,7 @@ function restartGame(){
     reqDir = 2;
     direction = 2;
     snakeLength = 3;
-    $("#highScore").text("High Score: "+ score)
+    $("#highScore").text("High Score: "+ highScore)
     
     score = 0;
     $("#score").text("Score: " + score);
@@ -59,6 +59,10 @@ function restartGame(){
 }
 
 function gameOver(){
+    if (score > highScore)
+    {
+        highScore = score; 
+    }
     myGameArea.clear();
     //myGameArea.context.clearRect(0,0,myGameArea.canvas.width, myGameArea.canvas.height);
 }
