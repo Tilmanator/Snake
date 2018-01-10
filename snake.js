@@ -1,9 +1,9 @@
-// TODO: graphics and score
-
 var direction = 2;  // up, left, down, right
 var reqDir = 2; // initially going down
 
 var boardSize = 20; 
+
+// May be able to delete
 var board = new Array(boardSize);
 for (var i = 0; i < boardSize; ++i)
 {
